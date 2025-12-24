@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Мои брони</h1>
+<table class="table table-hover">
+    <thead><tr><th>Тема</th><th>Комната</th><th>Время</th><th>Статус</th></tr></thead>
+    {% for b in bookings %}
+    <tr>
+        <td><a href="{% url 'rooms:booking_detail' b.pk %}">{{ b.title }}</a></td>
+        <td>{{ b.room.name }}</td>
+        <td>{{ b.start|date:"d.m.Y H:i" }} – {{ b.end|time:"H:i" }}</td>
+        <td><span class="badge bg-{% if b.status == 'A' %}success{% elif b.status == 'P' %}warning{% else %}secondary{% endif %}">{{ b.get_status_display }}</span></td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="4">У вас пока нет броней</td></tr>
+    {% endfor %}
+</table>
+{% endblock %}

@@ -1,0 +1,10 @@
+Здравствуйте, {{ booking.user.username }}!
+
+Ваша бронь успешно создана:
+
+Тема: {{ booking.title }}
+Комната: {{ booking.room.name }}
+Время: {{ booking.start|date:"d.m.Y H:i" }} – {{ booking.end|date:"d.m.Y H:i" }}
+Участников: {{ booking.attendees }}
+
+Спасибо за использование сервиса!

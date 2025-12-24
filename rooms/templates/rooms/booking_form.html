@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container py-5">
+    <h1 class="mb-4">Бронирование: {{ room.name }}</h1>
+
+    <div class="card">
+        <div class="card-body">
+            <form method="post">
+                {% csrf_token %}
+
+                <div class="mb-3">
+                    <label class="form-label">Тема встречи</label>
+                    <input type="text" name="title" value="{{ form.title.value|default:'' }}" class="form-control" required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Начало</label>
+                    <input type="datetime-local" name="start" value="{{ form.start.value|date:'Y-m-d\TH:i' }}" class="form-control" required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Конец</label>
+                    <input type="datetime-local" name="end" value="{{ form.end.value|date:'Y-m-d\TH:i' }}" class="form-control" required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Участников</label>
+                    <input type="number" name="attendees" value="{{ form.attendees.value|default:1 }}" class="form-control" min="1" required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Доп. оборудование</label>
+                    <select name="equipment" multiple class="form-select">
+                        {% for eq in form.equipment.field.queryset %}
+                        <option value="{{ eq.pk }}" {% if eq in form.equipment.value %}selected{% endif %}>{{ eq.name }}</option>
+                        {% endfor %}
+                    </select>
+                    <small class="text-muted">Зажмите Ctrl для выбора нескольких</small>
+                </div>
+
+                {% if form.non_field_errors %}
+                <div class="alert alert-danger">
+                    {{ form.non_field_errors }}
+                </div>
+                {% endif %}
+
+                <div class="mt-4">
+                    <button type="submit" class="btn btn-success btn-lg">Забронировать</button>
+                    <a href="{% url 'rooms:room_detail' room.id %}" class="btn btn-secondary btn-lg">Назад</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

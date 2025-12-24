@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1 class="mb-4">Переговорные комнаты</h1>
+<a href="{% url 'rooms:room_add' %}" class="btn btn-success mb-3">+ Добавить комнату</a>
+<a href="{% url 'rooms:export_excel' %}" class="btn btn-info mb-3">Excel</a>
+<a href="{% url 'rooms:export_pdf' %}" class="btn btn-danger mb-3">PDF</a>
+
+<div class="row">
+    {% for room in rooms %}
+    <div class="col-md-4 mb-4">
+        <div class="card h-100">
+            {% if room.image %}
+                <img src="{{ room.image.url }}" class="card-img-top" style="height:200px; object-fit:cover;">
+            {% endif %}
+            <div class="card-body d-flex flex-column">
+                <h5 class="card-title">{{ room.name }}</h5>
+                <p class="card-text">
+                    Вместимость: {{ room.capacity }} чел.<br>
+                    {% if room.location %}Локация: {{ room.location }}{% endif %}
+                </p>
+                <a href="{% url 'rooms:room_detail' room.pk %}" class="btn btn-primary mt-auto">Подробнее →</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

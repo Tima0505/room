@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container py-5">
+    <h1 class="mb-4">
+        {% if object %}Редактировать комнату{% else %}Добавить новую комнату{% endif %}
+    </h1>
+
+    <div class="card">
+        <div class="card-body">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <div class="mb-3">
+                    <label class="form-label">Название комнаты</label>
+                    <input type="text" name="name" value="{{ form.name.value|default:'' }}" class="form-control" required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Вместимость</label>
+                    <input type="number" name="capacity" value="{{ form.capacity.value|default:'' }}" class="form-control" required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Расположение</label>
+                    <input type="text" name="location" value="{{ form.location.value|default:'' }}" class="form-control">
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Оборудование</label>
+                    <select name="equipments" multiple class="form-select">
+                        {% for eq in form.equipments.field.queryset %}
+                        <option value="{{ eq.pk }}" {% if eq in form.equipments.value %}selected{% endif %}>{{ eq.name }}</option>
+                        {% endfor %}
+                    </select>
+                    <small class="text-muted">Зажмите Ctrl (или Cmd) для выбора нескольких</small>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Фото</label>
+                    {% if object and object.image %}
+                        <div class="mb-2">
+                            <img src="{{ object.image.url }}" class="img-thumbnail" style="max-height: 200px;">
+                            <small class="text-muted d-block">Текущее фото (можно заменить)</small>
+                        </div>
+                    {% endif %}
+                    <input type="file" name="image" class="form-control">
+                </div>
+
+                <div class="mt-4">
+                    <button type="submit" class="btn btn-success btn-lg">Сохранить</button>
+                    <a href="{% url 'rooms:room_list' %}" class="btn btn-secondary btn-lg">Отмена</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

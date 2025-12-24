@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8">
+<style>
+    table { width:100%; border-collapse:collapse; }
+    th, td { border:1px solid #000; padding:8px; text-align:left; }
+    th { background:#f0f0f0; }
+</style>
+</head>
+<body>
+<h1>Все брони на {{ "now"|date:"d.m.Y" }}</h1>
+<table>
+    <tr><th>Тема</th><th>Комната</th><th>Начало</th><th>Конец</th><th>Кто</th></tr>
+    {% for b in bookings %}
+    <tr>
+        <td>{{ b.title }}</td><td>{{ b.room.name }}</td>
+        <td>{{ b.start|date:"d.m.Y H:i" }}</td><td>{{ b.end|date:"H:i" }}</td>
+        <td>{{ b.user.username }}</td>
+    </tr>
+    {% endfor %}
+</table>
+</body></html>
